@@ -1,0 +1,45 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divisor de Imágenes</title>
+    <link rel="stylesheet" href="../Estilos/styles.css">
+</head>
+<body>
+    <h1>Divisor de Imágenes</h1>
+    <input type="file" id="upload" accept="image/*">
+    <div id="canvas-container">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <div class="controls">
+        <label><input type="radio" name="mode" value="vertical"> Vertical</label>
+        <input type="number" id="vertical" value="2" min="1">
+
+        <label><input type="radio" name="mode" value="horizontal"> Horizontal</label>
+        <input type="number" id="horizontal" value="2" min="1">
+
+        <label><input type="radio" name="mode" value="grid"> Ambas (grid)</label>
+    </div>
+
+    <div class="controls">
+        <h3>Formato de salida</h3>
+        <label><input type="radio" name="format" value="same" checked> Mismo que la entrada</label>
+        <label><input type="radio" name="format" value="png"> PNG</label>
+        <label><input type="radio" name="format" value="jpeg"> JPG/JPEG</label>
+        <label><input type="radio" name="format" value="webp"> WEBP</label>
+    </div>
+
+    <div class="controls">
+        <h3>Calidad de imagen</h3>
+        <input type="range" id="quality-range" min="1" max="100" value="80">
+        <input type="number" id="quality-number" min="1" max="100" value="80">
+    </div>
+
+    <button onclick="splitImage()">Dividir</button>
+
+    <script src="../logica/aplicacion.js"></script>
+</body>
+</html>
