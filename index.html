@@ -8,8 +8,14 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <h1>Divisor de Imágenes</h1>
-    <input type="file" id="upload" accept="image/*">
+    <h1>Herramienta para Dividir e Imprimir Imágenes</h1>
+    <div class="file-upload-container">
+        <label class="file-upload">
+            Seleccionar Archivo
+            <input type="file" id="upload" accept="image/*">
+        </label>
+        <span id="file-name">Ningún archivo seleccionado</span>
+    </div>
     <div id="canvas-container">
         <canvas id="canvas"></canvas>
     </div>
@@ -42,4 +48,5 @@
 
     <script src="./aplicacion.js"></script>
 </body>
+
 </html>

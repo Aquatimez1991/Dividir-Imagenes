@@ -2,10 +2,54 @@
 body {
     text-align: center;
     font-family: 'Arial', sans-serif;
-    background-color: #2c3e50;
+    background-color: #1e2a38;
     color: white;
     margin: 0;
     padding: 20px;
+}
+
+/* 📌 Título */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+h1 {
+    font-size: 36px;
+    font-weight: 800;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #f1c40f, #e67e22);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: 2px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 25px;
+    animation: fadeInScale 1s ease-out;
+}
+
+
+
+/* 📤 Carga de Archivos */
+input[type="file"] {
+    background: #2c3e50;
+    border: none;
+    padding: 8px 12px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="file"]:hover {
+    background: #34495e;
 }
 
 /* 🎨 Contenedor del Canvas */
@@ -13,33 +57,96 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
-    flex-wrap: wrap;
+    margin: 15px auto;
+    padding: 10px;
+    border-radius: 8px;
+    background: none;
+    max-width: 90%;
 }
 
-/* 🎨 Estilo del Canvas */
+/* 🖼️ Canvas */
 canvas {
-    border: 3px solid white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(255, 255, 255, 0.2);
     max-width: 100%;
-    transition: transform 0.2s ease-in-out;
 }
 
-canvas:hover {
-    transform: scale(1.02);
-}
-
-/* 🎛️ Controles */
+/* 🎛️ Controles Generales */
 .controls {
-    margin-top: 20px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
+    margin-top: 10px;
 }
 
-/* 🔘 Estilo de los Botones */
+/* 🎚️ Controles de División */
+.controls label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+/* 🎯 Estilo para los Radios (Botones Redondos) */
+.controls input[type="radio"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #f1c40f;
+    border-radius: 50%;
+    outline: none;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5px;
+}
+
+/* 🟢 Cuando está seleccionado */
+.controls input[type="radio"]:checked {
+    background-color: #f1c40f;
+    box-shadow: 0px 0px 5px rgba(241, 196, 15, 0.8);
+}
+
+/* 🎨 Formato de salida */
+h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #f1c40f;
+}
+
+/* 🎚️ Calidad de Imagen */
+input[type="range"] {
+    width: 140px;
+    cursor: pointer;
+}
+
+/* 🎨 Estilos para los campos numéricos */
+input[type="number"] {
+    width: 60px;
+    height: 32px;
+    font-size: 16px;
+    text-align: center;
+    border: 2px solid #f1c40f;
+    border-radius: 6px;
+    background-color: #2c3e50;
+    color: white;
+    outline: none;
+    transition: 0.2s ease-in-out;
+    padding: 4px;
+}
+
+/* 🟡 Efecto cuando la casilla está activa */
+input[type="number"]:focus {
+    border-color: #f39c12;
+    box-shadow: 0px 0px 6px rgba(243, 156, 18, 0.8);
+}
+
+/* ✅ Botón Dividir */
 button {
     background-color: #27ae60;
     color: white;
@@ -48,7 +155,7 @@ button {
     font-weight: bold;
     border: none;
     cursor: pointer;
-    margin: 5px;
+    margin-top: 15px;
     border-radius: 8px;
     transition: background 0.3s ease-in-out, transform 0.2s;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
@@ -57,17 +164,16 @@ button {
 button:hover {
     background-color: #2ecc71;
     transform: scale(1.05);
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* 📱 Estilos Responsivos */
+/* 📱 Responsive */
 @media (max-width: 768px) {
-    canvas {
-        width: 90%;
-    }
-
     .controls {
         flex-direction: column;
+    }
+
+    input[type="range"] {
+        width: 100%;
     }
 
     button {
@@ -75,3 +181,53 @@ button:hover {
         max-width: 250px;
     }
 }
+
+/* 📂 Contenedor del botón y el nombre del archivo */
+.file-upload-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+/* 🎨 Estilos del botón de seleccionar archivo */
+.file-upload {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    background-color: #f1c40f;
+    color: #1e2a38;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease, transform 0.2s;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.file-upload:hover {
+    background-color: #ffdb4d;
+    transform: scale(1.05);
+}
+
+/* 🎭 Ocultar el input file */
+input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+/* 📄 Texto del archivo seleccionado */
+#file-name {
+    font-size: 14px;
+    color: #ddd;
+    font-style: italic;
+}
+
+
