@@ -1,11 +1,12 @@
 let img = new Image();
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-let selectedFile = null; // Para rastrear si hay una imagen válida cargada
+let selectedFile = null;
 window.splitImage = splitImage;
 
 const qualityRange = document.getElementById("quality-range");
 const qualityNumber = document.getElementById("quality-number");
+const maxFileSizeMB = 10;
 
 function toggleQualityControls() {
     const selectedFormat = document.querySelector("input[name='format']:checked").value;
@@ -18,8 +19,6 @@ function toggleQualityControls() {
     }
 }
 
-
-
 document.getElementById("upload").addEventListener("change", function (event) {
     const file = event.target.files[0];
 
@@ -28,18 +27,23 @@ document.getElementById("upload").addEventListener("change", function (event) {
         return;
     }
 
-    // Validar que sea una imagen
     if (!file.type.startsWith("image/")) {
         alert("Debe seleccionar un archivo de imagen válido (JPG, PNG, WEBP, etc.).");
-        this.value = ""; // Resetear input
+        this.value = "";
         document.getElementById("file-name").textContent = "Ningún archivo seleccionado";
         selectedFile = null;
         return;
     }
 
-    selectedFile = file; // Guardamos el archivo como válido
+    const fileSizeMB = file.size / (1024 * 1024);
+    if (fileSizeMB > maxFileSizeMB) {
+        alert("El archivo es demasiado grande. Se recomienda dividirlo y utilizar formato JPG para una mejor compresión.");
+        document.getElementById("format-jpg").checked = true;
+    }
+
+    selectedFile = file;
     document.getElementById("file-name").textContent = file.name;
-    toggleQualityControls(); // Verificamos si hay que deshabilitar los controles de calidad
+    toggleQualityControls();
 
     const reader = new FileReader();
     reader.onload = function (e) {
@@ -63,6 +67,7 @@ document.querySelectorAll("input[name='mode'], input[type='number']").forEach(in
     input.addEventListener("input", drawGuidelines);
 });
 
+
 document.getElementById("quality-range").addEventListener("input", function () {
     document.getElementById("quality-number").value = this.value;
 });
@@ -74,6 +79,14 @@ document.getElementById("quality-number").addEventListener("input", function () 
 function splitImage() {
     if (!selectedFile) {
         alert("Debe seleccionar un archivo antes de dividir la imagen.");
+        return;
+    }
+
+    try {
+        sessionStorage.setItem("test", "test");
+        sessionStorage.removeItem("test");
+    } catch (e) {
+        alert("El almacenamiento es insuficiente para dividir la imagen. Seleccione un formato más ligero como JPG.");
         return;
     }
 
@@ -101,7 +114,7 @@ function splitImage() {
     const partWidth = img.width / vert;
     const partHeight = img.height / horz;
     let imagesData = [];
-    let processedImages = 0; // Contador de imágenes procesadas
+    let processedImages = 0;
 
     for (let i = 0; i < vert; i++) {
         for (let j = 0; j < horz; j++) {
@@ -112,39 +125,24 @@ function splitImage() {
     
             tempCtx.drawImage(img, -i * partWidth, -j * partHeight);
     
-            let outputFormat;
-            let extension;
+            let outputFormat = format === "jpeg" ? "image/jpeg" : format === "webp" ? "image/webp" : "image/png";
+            let imageUrl = tempCanvas.toDataURL(outputFormat, quality);
+            imagesData.push({ imageUrl, extension: outputFormat.split("/")[1] });
     
-            // Si el usuario selecciona "mismo que la entrada"
-            if (format === "original") {
-                outputFormat = selectedFile.type; 
-                extension = selectedFile.type.split("/")[1]; // Extraer la extensión real
-            } else if (format === "jpeg") {
-                outputFormat = "image/jpeg";
-                extension = "jpg";
-            } else if (format === "webp") {
-                outputFormat = "image/webp";
-                extension = "webp";
-            } else {
-                outputFormat = "image/png"; // Si no se elige nada, por defecto PNG
-                extension = "png";
-            }
+            processedImages++;
     
-            // Convertir el canvas directamente a DataURL con el formato seleccionado
-            const imageUrl = tempCanvas.toDataURL(outputFormat, quality);
-            imagesData.push({ imageUrl, extension });
-    
-            processedImages++; // Contamos la imagen procesada
-    
-            // Cuando todas las imágenes estén listas, almacenamos y redirigimos
             if (processedImages === vert * horz) {
-                sessionStorage.setItem("splitImages", JSON.stringify(imagesData));
-                window.location.href = "preview.html";
+                try {
+                    sessionStorage.setItem("splitImages", JSON.stringify(imagesData));
+                    window.location.href = "preview.html";
+                } catch (e) {
+                    alert("No se pudo almacenar la imagen dividida. Pruebe con un formato diferente.");
+                }
             }
         }
     }
-    
 }
+
 
 
 function drawGuidelines() {
