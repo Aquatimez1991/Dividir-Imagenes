@@ -104,9 +104,5 @@ Este proyecto es de código abierto y está disponible bajo la licencia MIT.
 
 ---
 
-🖥️ Desarrollado con ❤️ por [Tu Nombre]
+🖥️ Desarrollado con ❤️ por Elias Jeshua Salgado Coripuna
 
-```
-Elias Jeshua Salgado Coripuna
-
-```
